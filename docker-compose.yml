@@ -1,0 +1,13 @@
+services:
+  syncthing:
+    image: nginx-docker
+    container_name: nginx
+    hostname: nginx-server
+    volumes:
+      - /html:/usr/local/nginx/html
+      - /nginx.conf:/usr/local/nginx/conf/nginx.conf
+      - /logs:/usr/local/nginx/logs/
+    #network_mode: host
+    ports:
+      - 80:80
+    restart: unless-stopped
