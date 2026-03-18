@@ -1,4 +1,4 @@
-FROM alpine:latest as nxbuild
+FROM alpine:latest AS nxbuild
 WORKDIR /
 RUN apk add build-base git pcre pcre-dev openssl openssl-dev zlib zlib-dev wget && \
   git clone https://github.com/nginx/nginx.git && \
@@ -13,7 +13,7 @@ EXPOSE 80 443
 COPY --from=nxbuild /usr/local/nginx/ /usr/local/nginx/
 RUN apk add pcre openssl zlib 
 VOLUME /usr/local/nginx/html /usr/local/nginx/conf /usr/local/nginx/logs
-ENV PATH /usr/local/nginx/sbin:$PATH
+ENV PATH=/usr/local/nginx/sbin
 ENTRYPOINT ["nginx"]
 CMD ["-g","daemon off;"]
 
