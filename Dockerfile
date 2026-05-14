@@ -9,6 +9,9 @@ RUN apk add --no-cache \
 
 RUN git clone https://github.com/nginx/nginx.git && \
     cd  /nginx && \
+    LATEST_RELEASE=$(git tag -l --sort=-v:refname | grep -E '^release-' | head -n 1) && \
+    echo "最新 Release 标签为: $LATEST_RELEASE" && \
+    git checkout $LATEST_RELEASE && \
     cp /nginx/auto/configure /nginx/ && \
     ./configure \
     --with-http_ssl_module \
