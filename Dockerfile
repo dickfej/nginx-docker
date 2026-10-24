@@ -1,5 +1,6 @@
 FROM cgr.dev/chainguard/wolfi-base AS nxbuild
 WORKDIR /
+
 RUN apk add --no-cache \
     build-base \
     openssl-dev \
@@ -8,16 +9,19 @@ RUN apk add --no-cache \
     git
 
 RUN git clone https://github.com/nginx/nginx.git
+
 RUN cd  /nginx && \
     LATEST_RELEASE=$(git tag -l --sort=-v:refname | grep -E '^release-' | head -n 1) && \
     echo "最新 Release 标签为: $LATEST_RELEASE" && \
-    git checkout $LATEST_RELEASE
+    git checkout $LATEST_RELEASE -f
 RUN cp /nginx/auto/configure /nginx/
-RUN ./configure \
+RUN cd  /nginx && \
+    ./configure \
     --with-http_ssl_module \
     --with-stream \
     --with-stream_ssl_preread_module
-RUN make && make install
+RUN cd  /nginx && \
+    make && make install
 
 FROM cgr.dev/chainguard/wolfi-base
 LABEL Name=nginx-slim
@@ -32,5 +36,3 @@ VOLUME /usr/local/nginx/html /usr/local/nginx/conf /usr/local/nginx/logs
 ENV PATH=/usr/local/nginx/sbin
 ENTRYPOINT ["nginx"]
 CMD ["-g","daemon off;"]
-
-
