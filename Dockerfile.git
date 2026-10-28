@@ -34,5 +34,4 @@ RUN apk add --no-cache \
     mkdir -p /usr/local/nginx/logs/
 VOLUME /usr/local/nginx/html /usr/local/nginx/conf /usr/local/nginx/logs
 ENV PATH=/usr/local/nginx/sbin
-ENTRYPOINT ["nginx"]
-CMD ["-g","daemon off;"]
+ENTRYPOINT ["nginx","-g","daemon off;"]

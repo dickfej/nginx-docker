@@ -8,7 +8,7 @@ RUN apk add --no-cache \
     zlib-dev \
     git
 
-RUN git clone https://github.com/nginx/nginx.git
+COPY nginx ./nginx
 
 RUN cd  /nginx && \
     LATEST_RELEASE=$(git tag -l --sort=-v:refname | grep -E '^release-' | head -n 1) && \
@@ -34,5 +34,4 @@ RUN apk add --no-cache \
     mkdir -p /usr/local/nginx/logs/
 VOLUME /usr/local/nginx/html /usr/local/nginx/conf /usr/local/nginx/logs
 ENV PATH=/usr/local/nginx/sbin
-ENTRYPOINT ["nginx"]
-CMD ["-g","daemon off;"]
+ENTRYPOINT ["nginx","-g","daemon off;"]
